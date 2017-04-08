@@ -10,15 +10,7 @@ import Cocoa
 
 class MainPopoverViewController: NSViewController {
     
-    var folderPaths: [URL] = []
-    var destinationFolder: URL?
-    
-    var filesToBeMoved: [URL] = []
-    var foldersToBeChecked: [URL] = []
-    
-    let fileManager = FileManager()
-    
-    @IBOutlet weak var allMovieTypesCheckboxButton: NSButton!
+    @IBOutlet weak var allVideoTypesCheckboxButton: NSButton!
     @IBOutlet weak var movFileTypeButton: NSButton!
     @IBOutlet weak var mp4FileTypeButton: NSButton!
     @IBOutlet weak var mkvFileTypeButton: NSButton!
@@ -29,48 +21,51 @@ class MainPopoverViewController: NSViewController {
     
     @IBOutlet weak var folderSelectedCountLabel: NSTextField!
     @IBOutlet weak var destinationFolderLabel: NSTextField!
+    @IBOutlet weak var otherFileExtensionsTextField: NSTextField!
+    @IBOutlet weak var arrancarButton: NSButton!
+    @IBOutlet weak var progressIndicator: NSProgressIndicator!
+    
+    var checkboxButtons: [NSButton] = []
+    
+    var allVideoTypesAreChecked = false
+    var allImageTypesAreChecked = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
+        self.title = "Arrancar"
+        arrancarButton.isEnabled = false
+        checkboxButtons = [movFileTypeButton, mp4FileTypeButton, mkvFileTypeButton, jpgFileTypeButton, pngFileTypeButton]
     }
     
     
-    func move(files: [URL], toNewDirectory newDirectory: URL) {
+    func toggleAllVideoCheckboxButtons() {
         
-        for file in files {
-            
-            let newPath = newDirectory.appendingPathComponent(file.lastPathComponent)
-            do {
-                try fileManager.moveItem(at: file, to: newPath)
-            } catch let error as NSError {
-                print(error.localizedDescription)
-            }
-        }
+        let state = allVideoTypesCheckboxButton.state
+        
+        movFileTypeButton.state = state
+        mp4FileTypeButton.state = state
+        mkvFileTypeButton.state = state
+        allVideoTypesAreChecked = state == 1 ? true : false
+        print(allVideoTypesAreChecked)
+    }
+    func toggleAllImageCheckboxButtons() {
+        
+        let state = allImageTypesCheckboxButton.state
+        
+        jpgFileTypeButton.state = state
+        pngFileTypeButton.state = state
+        
+        allImageTypesAreChecked = state == 1 ? true : false
+        print(allImageTypesCheckboxButton)
     }
     
-    func getURLsForAllFilesIn(directory: URL, ofTypes types: [String]) {
-        
-        guard directory.hasDirectoryPath else { return }
-        
-        
-        guard let contents = try? fileManager.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: .skipsHiddenFiles) else { return }
-        
-        for item in contents {
-            if item.hasDirectoryPath {
-                
-                self.foldersToBeChecked.append(item)
-                getURLsForAllFilesIn(directory: item, ofTypes: types)
-                
-            } else if types.contains(item.pathExtension) {
-                self.filesToBeMoved.append(item)
-            }
-        }
-        
-        if self.foldersToBeChecked.contains(directory) {
-            guard let index = self.foldersToBeChecked.index(of: directory) else { return }
-            self.foldersToBeChecked.remove(at: index)
-        }
+    
+    @IBAction func allVideoTypesCheckboxButtonClicked(_ sender: Any) {
+        toggleAllVideoCheckboxButtons()
+    }
+    
+    @IBAction func allImageTypesCheckboxButtonClicked(_ sender: Any) {
+        toggleAllImageCheckboxButtons()
     }
     
     @IBAction func folderSelectButtonClicked(_ sender: Any) {
@@ -83,8 +78,14 @@ class MainPopoverViewController: NSViewController {
         openPanel.begin { (result) in
             
             guard result == NSFileHandlingPanelOKButton else { return }
-            self.folderPaths = openPanel.urls
+            ItemController.shared.folderPaths = openPanel.urls
             
+            let folderCount = openPanel.urls.filter({$0.hasDirectoryPath}).count
+            
+            self.folderSelectedCountLabel.stringValue = "\(folderCount) Folders Selected"
+            if ItemController.shared.destinationFolder != nil && ItemController.shared.folderPaths.count > 0 {
+                self.arrancarButton.isEnabled = true
+            }
         }
     }
     
@@ -99,18 +100,40 @@ class MainPopoverViewController: NSViewController {
         openPanel.begin { (result) in
             
             guard let destination = openPanel.url, result == NSFileHandlingPanelOKButton else { return }
-            self.destinationFolder = destination
-            
+            ItemController.shared.destinationFolder = destination
+            self.destinationFolderLabel.stringValue = "Files will be moved to \(destination.lastPathComponent)"
+            if ItemController.shared.destinationFolder != nil && ItemController.shared.folderPaths.count > 0 {
+                self.arrancarButton.isEnabled = true
+            }
         }
     }
     
     @IBAction func arrancarButtonClicked(_ sender: Any) {
-        guard let destinationFolder = self.destinationFolder else { return }
+        guard let destinationFolder = ItemController.shared.destinationFolder else { return }
+        self.progressIndicator.startAnimation(self)
+        let selectedButtons = checkboxButtons.filter({$0.state == 1})
         
-        for selectedFolder in self.folderPaths {
-            getURLsForAllFilesIn(directory: selectedFolder, ofTypes: ["jpg"])
+        var selectedTypes = selectedButtons.map({$0.title})
+        selectedTypes += selectedTypes.map({$0.lowercased()})
+        if otherFileExtensionsTextField.stringValue != "" {
+            let otherFileTypes = otherFileExtensionsTextField.stringValue.components(separatedBy: .whitespaces)
+            selectedTypes += otherFileTypes
         }
-    
-        self.move(files: self.filesToBeMoved, toNewDirectory: destinationFolder)
+        
+        for selectedFolder in ItemController.shared.folderPaths {
+            ItemController.shared.getURLsForAllFilesIn(directory: selectedFolder, ofTypes: selectedTypes)
+        }
+        
+        guard ItemController.shared.filesToBeMoved.count > 0 else { self.destinationFolderLabel.stringValue = "No files matching your criteria were found"; self.progressIndicator.stopAnimation(self); return }
+        
+        ItemController.shared.move(files: ItemController.shared.filesToBeMoved, toNewDirectory: destinationFolder) { (success) in
+            if success {
+                self.destinationFolderLabel.stringValue = "Files successfully moved to \(destinationFolder.lastPathComponent)"
+            } else {
+                self.destinationFolderLabel.stringValue = "Files could not be moved to \(destinationFolder.lastPathComponent)"
+            }
+            self.progressIndicator.stopAnimation(self)
+            ItemController.shared.filesToBeMoved = []
+        }
     }
 }
