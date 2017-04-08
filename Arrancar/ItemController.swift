@@ -12,6 +12,13 @@ class ItemController {
     
     static let shared = ItemController()
     
+    weak var delegate: ArrancarPreparationDelegate?
+    
+    enum FileModificationType {
+        case move
+        case copy
+    }
+    
     let folderPathsWereSetNotification = Notification.Name("folderPathsWereSet")
     
     var folderPaths: [URL] = [] {
@@ -23,18 +30,26 @@ class ItemController {
     }
     var destinationFolder: URL?
     
-    var filesToBeMoved: [URL] = []
+    var filesToBeModified: [URL] = []
     var foldersToBeChecked: [URL] = []
     
     let fileManager = FileManager()
     
-    func move(files: [URL], toNewDirectory newDirectory: URL, completion: (Bool) -> Void) {
-        
-        for file in files {
+    func modifyFilesToBeModified(toNewDirectory newDirectory: URL, withModificationType modificationType: FileModificationType, completion: (Bool) -> Void) {
+        for fileURL in self.filesToBeModified {
             
-            let newPath = newDirectory.appendingPathComponent(file.lastPathComponent)
             do {
-                try ItemController.shared.fileManager.moveItem(at: file, to: newPath)
+                if modificationType == .copy {
+                    let pathComponents = fileURL.lastPathComponent.components(separatedBy: ".")
+                    guard let fileName = pathComponents.first, let pathExtension = pathComponents.last else { return }
+                    let lastFileComponent = "\(fileName) copy"
+                    let newPath = newDirectory.appendingPathComponent(lastFileComponent).appendingPathExtension(pathExtension)
+                    try fileManager.copyItem(at: fileURL, to: newPath)
+                } else {
+                    let newPath = newDirectory.appendingPathComponent(fileURL.lastPathComponent)
+                    try fileManager.moveItem(at: fileURL, to: newPath)
+                }
+                
             } catch let error as NSError {
                 print(error.localizedDescription)
                 completion(false)
@@ -43,11 +58,12 @@ class ItemController {
         prepareForNewArrancar()
         completion(true)
     }
-    
+
     func prepareForNewArrancar() {
-        self.filesToBeMoved = []
+        self.filesToBeModified = []
         self.folderPaths = []
         self.foldersToBeChecked = []
+        delegate?.prepareViewsForNewArrancar()
     }
     
     func getURLsForAllFilesIn(directory: URL, ofTypes types: [String]) {
@@ -60,17 +76,21 @@ class ItemController {
         for item in contents {
             if item.hasDirectoryPath {
                 
-                ItemController.shared.foldersToBeChecked.append(item)
+                self.foldersToBeChecked.append(item)
                 getURLsForAllFilesIn(directory: item, ofTypes: types)
                 
             } else if types.contains(item.pathExtension) {
-                ItemController.shared.filesToBeMoved.append(item)
+                self.filesToBeModified.append(item)
             }
         }
         
         if ItemController.shared.foldersToBeChecked.contains(directory) {
             guard let index = ItemController.shared.foldersToBeChecked.index(of: directory) else { return }
-            ItemController.shared.foldersToBeChecked.remove(at: index)
+            self.foldersToBeChecked.remove(at: index)
         }
     }
+}
+
+protocol ArrancarPreparationDelegate: class {
+    func prepareViewsForNewArrancar()
 }

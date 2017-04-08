@@ -673,8 +673,8 @@
                                 <rect key="frame" x="20" y="324" width="265" height="0.0"/>
                             </stackView>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kHX-ee-QFT">
-                                <rect key="frame" x="102.5" y="82" width="100" height="32"/>
-                                <buttonCell key="cell" type="push" title="Move to..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gjA-Zx-Nh4">
+                                <rect key="frame" x="98" y="82" width="109" height="32"/>
+                                <buttonCell key="cell" type="push" title="Destination" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gjA-Zx-Nh4">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -694,7 +694,7 @@
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b4A-GE-yJq">
                                 <rect key="frame" x="18" y="307" width="269" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Only Move Specific Filetypes:" id="YHp-dd-v27">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Only Look For Specific Filetypes:" id="YHp-dd-v27">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -755,9 +755,10 @@
                                     <action selector="folderSelectButtonClicked:" target="XfG-lQ-9wD" id="kQJ-hI-Hcm"/>
                                 </connections>
                             </button>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ybh-sh-DIg">
-                                <rect key="frame" x="18" y="64" width="269" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Select a destination folder" id="gkt-w5-c0H">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ybh-sh-DIg">
+                                <rect key="frame" x="18" y="28" width="269" height="17"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Select a destination folder above" id="gkt-w5-c0H">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -771,22 +772,13 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="adv-x1-k6p">
-                                <rect key="frame" x="20" y="53" width="265" height="5"/>
+                            <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="adv-x1-k6p">
+                                <rect key="frame" x="20" y="80" width="265" height="5"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </box>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6W1-K5-mdL">
-                                <rect key="frame" x="105.5" y="13" width="93" height="32"/>
-                                <buttonCell key="cell" type="push" title="Arrancar" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="my9-FH-NGS">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="arrancarButtonClicked:" target="XfG-lQ-9wD" id="kqq-Pn-eOh"/>
-                                </connections>
-                            </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o10-NQ-GfI">
-                                <rect key="frame" x="18" y="200" width="269" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Other file extension (separated by spaces):" id="DdT-uB-SVm">
+                                <rect key="frame" x="10" y="200" width="285" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Other file extension(s) (separated by spaces):" id="DdT-uB-SVm">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -800,29 +792,68 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="j68-ms-rQE">
-                                <rect key="frame" x="253" y="15" width="32" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <stackView distribution="fill" orientation="horizontal" alignment="top" spacing="2" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" fixedFrame="YES" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Pz-MU-Nt5">
+                                <rect key="frame" x="69" y="53" width="170" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pEC-s6-IjD">
+                                        <rect key="frame" x="-6" y="-7" width="88" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Copy to" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ZbF-8m-ekM">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="copyToDestinationButtonClicked:" target="XfG-lQ-9wD" id="uvE-Rr-afI"/>
+                                        </connections>
+                                    </button>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cbh-AM-N69">
+                                        <rect key="frame" x="76" y="4" width="17" height="17"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="or" id="OY9-6T-Lvd">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6W1-K5-mdL">
+                                        <rect key="frame" x="87" y="-7" width="89" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Move to" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="my9-FH-NGS">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="moveToDestinationButtonClicked:" target="XfG-lQ-9wD" id="nwl-1O-71P"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
+                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="j68-ms-rQE">
+                                <rect key="frame" x="277" y="4" width="16" height="16"/>
                             </progressIndicator>
                         </subviews>
                         <constraints>
                             <constraint firstItem="vDV-Rf-u4J" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="0TW-qE-rXE"/>
                             <constraint firstItem="P2M-xK-Bqx" firstAttribute="top" secondItem="Lap-N2-IQ6" secondAttribute="bottom" constant="6" id="1pZ-og-ZVy"/>
-                            <constraint firstItem="ybh-sh-DIg" firstAttribute="top" secondItem="kHX-ee-QFT" secondAttribute="bottom" constant="8" id="3KL-Rq-XV7"/>
                             <constraint firstItem="xMF-qa-W68" firstAttribute="top" secondItem="o10-NQ-GfI" secondAttribute="bottom" constant="6" id="4sP-57-4Bq"/>
-                            <constraint firstItem="adv-x1-k6p" firstAttribute="top" secondItem="ybh-sh-DIg" secondAttribute="bottom" constant="8" id="5LQ-9I-csF"/>
                             <constraint firstItem="hpV-Se-7vb" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="5Qh-ZX-e9G"/>
                             <constraint firstItem="o10-NQ-GfI" firstAttribute="top" secondItem="o3H-A9-J2m" secondAttribute="bottom" constant="8" id="5Yd-Kj-1Jc"/>
                             <constraint firstAttribute="trailing" secondItem="xMF-qa-W68" secondAttribute="trailing" constant="20" id="5qH-7F-bFG"/>
                             <constraint firstItem="b4A-GE-yJq" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="6yu-78-VDT"/>
                             <constraint firstItem="dQe-Ci-mCy" firstAttribute="top" secondItem="P2M-xK-Bqx" secondAttribute="bottom" constant="6" id="8JP-7W-ixq"/>
                             <constraint firstItem="8Iu-uz-smd" firstAttribute="top" secondItem="b4A-GE-yJq" secondAttribute="bottom" constant="8" id="9XS-y9-xPr"/>
+                            <constraint firstItem="o10-NQ-GfI" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="12" id="C44-Pq-dEk"/>
                             <constraint firstItem="kHX-ee-QFT" firstAttribute="top" secondItem="6JE-mz-Szf" secondAttribute="bottom" constant="8" id="D03-Kr-pWW"/>
                             <constraint firstItem="dQe-Ci-mCy" firstAttribute="trailing" secondItem="P2M-xK-Bqx" secondAttribute="trailing" id="E6L-f7-Jt6"/>
-                            <constraint firstItem="o10-NQ-GfI" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="IlD-Np-Rda"/>
-                            <constraint firstAttribute="trailing" secondItem="ybh-sh-DIg" secondAttribute="trailing" constant="20" id="LlY-6G-4zg"/>
                             <constraint firstAttribute="trailing" secondItem="b4A-GE-yJq" secondAttribute="trailing" constant="20" id="MFV-Nd-acv"/>
-                            <constraint firstAttribute="trailing" secondItem="o10-NQ-GfI" secondAttribute="trailing" constant="20" id="O8P-64-NE4"/>
                             <constraint firstItem="E19-bx-nGF" firstAttribute="top" secondItem="KOG-YU-Fwp" secondAttribute="bottom" constant="6" id="R1k-JE-qzD"/>
                             <constraint firstItem="o3H-A9-J2m" firstAttribute="trailing" secondItem="dQe-Ci-mCy" secondAttribute="trailing" id="TjG-OG-omb"/>
                             <constraint firstItem="o3H-A9-J2m" firstAttribute="top" secondItem="dQe-Ci-mCy" secondAttribute="bottom" constant="6" id="VEb-Zg-qRJ"/>
@@ -831,33 +862,32 @@
                             <constraint firstItem="KOG-YU-Fwp" firstAttribute="top" secondItem="8Iu-uz-smd" secondAttribute="bottom" constant="6" id="aEu-UE-3Ba"/>
                             <constraint firstAttribute="trailing" secondItem="6JE-mz-Szf" secondAttribute="trailing" constant="20" id="aX1-TN-PAO"/>
                             <constraint firstItem="6JE-mz-Szf" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="b0W-xp-XFh"/>
-                            <constraint firstAttribute="trailing" secondItem="adv-x1-k6p" secondAttribute="trailing" constant="20" id="ePE-uS-GDh"/>
+                            <constraint firstAttribute="trailing" secondItem="o10-NQ-GfI" secondAttribute="trailing" constant="12" id="cMS-8u-RUL"/>
                             <constraint firstItem="b4A-GE-yJq" firstAttribute="top" secondItem="vDV-Rf-u4J" secondAttribute="bottom" id="f6g-np-hkN"/>
                             <constraint firstItem="Lap-N2-IQ6" firstAttribute="top" secondItem="b4A-GE-yJq" secondAttribute="bottom" constant="8" id="jA6-3g-zm9"/>
                             <constraint firstItem="E19-bx-nGF" firstAttribute="trailing" secondItem="8Iu-uz-smd" secondAttribute="trailing" id="jJb-HB-wZc"/>
                             <constraint firstItem="6JE-mz-Szf" firstAttribute="top" secondItem="hpV-Se-7vb" secondAttribute="bottom" constant="8" id="jLR-Nf-P8M"/>
-                            <constraint firstItem="6W1-K5-mdL" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="jSN-pU-bn9"/>
-                            <constraint firstItem="adv-x1-k6p" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="jYu-ar-vgg"/>
+                            <constraint firstAttribute="bottom" secondItem="j68-ms-rQE" secondAttribute="bottom" constant="4" id="onq-ZB-dTv"/>
                             <constraint firstAttribute="trailing" secondItem="8Iu-uz-smd" secondAttribute="trailing" constant="38" id="pkn-Xb-hpK"/>
+                            <constraint firstAttribute="trailing" secondItem="j68-ms-rQE" secondAttribute="trailing" constant="12" id="rbC-9I-qAL"/>
                             <constraint firstItem="xMF-qa-W68" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="rxf-zP-aex"/>
                             <constraint firstItem="P2M-xK-Bqx" firstAttribute="trailing" secondItem="Lap-N2-IQ6" secondAttribute="trailing" id="tj5-NY-T0w"/>
                             <constraint firstItem="Lap-N2-IQ6" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="32" id="tkY-pB-ltc"/>
                             <constraint firstItem="kHX-ee-QFT" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="v73-R3-T1t"/>
                             <constraint firstItem="KOG-YU-Fwp" firstAttribute="trailing" secondItem="8Iu-uz-smd" secondAttribute="trailing" id="wee-Od-4dl"/>
-                            <constraint firstItem="6W1-K5-mdL" firstAttribute="top" secondItem="adv-x1-k6p" secondAttribute="bottom" constant="14" id="xCp-Ek-jBH"/>
-                            <constraint firstItem="ybh-sh-DIg" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="xJG-Ur-YcK"/>
                             <constraint firstItem="hpV-Se-7vb" firstAttribute="top" secondItem="xMF-qa-W68" secondAttribute="bottom" constant="8" id="yqL-l8-fHg"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="allImageTypesCheckboxButton" destination="8Iu-uz-smd" id="5f5-CR-yi7"/>
                         <outlet property="allVideoTypesCheckboxButton" destination="Lap-N2-IQ6" id="CZE-MI-7bu"/>
-                        <outlet property="arrancarButton" destination="6W1-K5-mdL" id="eTK-e6-cdS"/>
+                        <outlet property="copyToDestinationButton" destination="pEC-s6-IjD" id="Gkj-2e-TiI"/>
                         <outlet property="destinationFolderLabel" destination="ybh-sh-DIg" id="cR8-hp-hro"/>
                         <outlet property="folderSelectedCountLabel" destination="6JE-mz-Szf" id="UdY-Ej-67H"/>
                         <outlet property="jpgFileTypeButton" destination="KOG-YU-Fwp" id="shR-Qp-dvK"/>
                         <outlet property="mkvFileTypeButton" destination="o3H-A9-J2m" id="HJj-9r-3EG"/>
                         <outlet property="movFileTypeButton" destination="P2M-xK-Bqx" id="Mfu-US-I0Z"/>
+                        <outlet property="moveToDestinationButton" destination="6W1-K5-mdL" id="eY2-Wt-ka5"/>
                         <outlet property="mp4FileTypeButton" destination="dQe-Ci-mCy" id="7ah-ZO-ys6"/>
                         <outlet property="otherFileExtensionsTextField" destination="xMF-qa-W68" id="r4y-L1-Z9H"/>
                         <outlet property="pngFileTypeButton" destination="E19-bx-nGF" id="E1A-PW-QVE"/>
@@ -870,7 +900,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </customView>
             </objects>
-            <point key="canvasLocation" x="532" y="259"/>
+            <point key="canvasLocation" x="531.5" y="259"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="q0G-Kq-muI">

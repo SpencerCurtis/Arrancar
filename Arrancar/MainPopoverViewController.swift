@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class MainPopoverViewController: NSViewController {
+class MainPopoverViewController: NSViewController, ArrancarPreparationDelegate {
     
     @IBOutlet weak var allVideoTypesCheckboxButton: NSButton!
     @IBOutlet weak var movFileTypeButton: NSButton!
@@ -22,7 +22,8 @@ class MainPopoverViewController: NSViewController {
     @IBOutlet weak var folderSelectedCountLabel: NSTextField!
     @IBOutlet weak var destinationFolderLabel: NSTextField!
     @IBOutlet weak var otherFileExtensionsTextField: NSTextField!
-    @IBOutlet weak var arrancarButton: NSButton!
+    @IBOutlet weak var copyToDestinationButton: NSButton!
+    @IBOutlet weak var moveToDestinationButton: NSButton!
     @IBOutlet weak var progressIndicator: NSProgressIndicator!
     
     var checkboxButtons: [NSButton] = []
@@ -30,14 +31,21 @@ class MainPopoverViewController: NSViewController {
     var allVideoTypesAreChecked = false
     var allImageTypesAreChecked = false
     
+    var defaultFolderSelectedCountLabelText = "0 Folders Selected"
+    var defaultDestinationFolderLabelText = "Select a destination folder above"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Arrancar"
-        arrancarButton.isEnabled = false
+        moveToDestinationButton.isEnabled = false
+        copyToDestinationButton.isEnabled = false
+        
         checkboxButtons = [movFileTypeButton, mp4FileTypeButton, mkvFileTypeButton, jpgFileTypeButton, pngFileTypeButton]
         setupFileDragDestinationView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateFolderSelectedCountLabelWith(notification:)), name: ItemController.shared.folderPathsWereSetNotification, object: nil)
+        
+        ItemController.shared.delegate = self
     }
     
     func setupFileDragDestinationView() {
@@ -53,6 +61,7 @@ class MainPopoverViewController: NSViewController {
         labelText += folderCount > 1 ? "Folders selected" : "Folder Selected"
         
         folderSelectedCountLabel.stringValue = labelText
+        toggleDestinationOperationButtonsEnabledState()
     }
     
     func toggleAllVideoCheckboxButtons() {
@@ -74,6 +83,13 @@ class MainPopoverViewController: NSViewController {
         
         allImageTypesAreChecked = state == 1 ? true : false
         print(allImageTypesCheckboxButton)
+    }
+    
+    func toggleDestinationOperationButtonsEnabledState() {
+        if ItemController.shared.destinationFolder != nil && ItemController.shared.folderPaths.count > 0 {
+            self.moveToDestinationButton.isEnabled = true
+            self.copyToDestinationButton.isEnabled = true
+        }
     }
     
     
@@ -101,11 +117,9 @@ class MainPopoverViewController: NSViewController {
             
             var labelText = "\(folderCount) "
             labelText += folderCount > 1 ? "Folders selected" : "Folder Selected"
-
+            
             self.folderSelectedCountLabel.stringValue = labelText
-            if ItemController.shared.destinationFolder != nil && ItemController.shared.folderPaths.count > 0 {
-                self.arrancarButton.isEnabled = true
-            }
+            self.toggleDestinationOperationButtonsEnabledState()
         }
     }
     
@@ -121,15 +135,12 @@ class MainPopoverViewController: NSViewController {
             
             guard let destination = openPanel.url, result == NSFileHandlingPanelOKButton else { return }
             ItemController.shared.destinationFolder = destination
-            self.destinationFolderLabel.stringValue = "Files will be moved to \(destination.lastPathComponent)"
-            if ItemController.shared.destinationFolder != nil && ItemController.shared.folderPaths.count > 0 {
-                self.arrancarButton.isEnabled = true
-            }
+            self.destinationFolderLabel.stringValue = "Your destination folder is: \(destination.lastPathComponent)"
+            self.toggleDestinationOperationButtonsEnabledState()
         }
     }
     
-    @IBAction func arrancarButtonClicked(_ sender: Any) {
-        guard let destinationFolder = ItemController.shared.destinationFolder else { return }
+    func prepareForSelectedFileModification() {
         self.progressIndicator.startAnimation(self)
         let selectedButtons = checkboxButtons.filter({$0.state == 1})
         
@@ -143,16 +154,50 @@ class MainPopoverViewController: NSViewController {
         for selectedFolder in ItemController.shared.folderPaths {
             ItemController.shared.getURLsForAllFilesIn(directory: selectedFolder, ofTypes: selectedTypes)
         }
+    }
+    
+    func prepareViewsForNewArrancar() {
+        self.folderSelectedCountLabel.stringValue = defaultFolderSelectedCountLabelText
+    }
+    
+    
+    @IBAction func moveToDestinationButtonClicked(_ sender: Any) {
         
-        guard ItemController.shared.filesToBeMoved.count > 0 else { self.destinationFolderLabel.stringValue = "No files matching your criteria were found"; self.progressIndicator.stopAnimation(self); return }
+        prepareForSelectedFileModification()
         
-        ItemController.shared.move(files: ItemController.shared.filesToBeMoved, toNewDirectory: destinationFolder) { (success) in
+        guard let destinationFolder = ItemController.shared.destinationFolder else { return }
+
+        guard ItemController.shared.filesToBeModified.count > 0 else { self.destinationFolderLabel.stringValue = "No files matching your criteria were found"; self.progressIndicator.stopAnimation(self); return }
+        
+        ItemController.shared.modifyFilesToBeModified(toNewDirectory: destinationFolder, withModificationType: .move) { (success) in
             if success {
                 self.destinationFolderLabel.stringValue = "Files successfully moved to \(destinationFolder.lastPathComponent)"
             } else {
                 self.destinationFolderLabel.stringValue = "Files could not be moved to \(destinationFolder.lastPathComponent)"
             }
             self.progressIndicator.stopAnimation(self)
+
+        }
+        
+    }
+    
+    @IBAction func copyToDestinationButtonClicked(_ sender: Any) {
+        prepareForSelectedFileModification()
+        
+        guard let destinationFolder = ItemController.shared.destinationFolder else { return }
+        
+        guard ItemController.shared.filesToBeModified.count > 0 else { self.destinationFolderLabel.stringValue = "No files matching your criteria were found"; self.progressIndicator.stopAnimation(self); return }
+        
+        ItemController.shared.modifyFilesToBeModified(toNewDirectory: destinationFolder, withModificationType: .copy) { (success) in
+            if success {
+                self.destinationFolderLabel.stringValue = "Files successfully copied to \(destinationFolder.lastPathComponent)"
+            } else {
+                self.destinationFolderLabel.stringValue = "Files could not be copied to \(destinationFolder.lastPathComponent)"
+            }
+            self.progressIndicator.stopAnimation(self)
+            
         }
     }
+    
+    
 }
