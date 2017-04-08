@@ -12,7 +12,15 @@ class ItemController {
     
     static let shared = ItemController()
     
-    var folderPaths: [URL] = []
+    let folderPathsWereSetNotification = Notification.Name("folderPathsWereSet")
+    
+    var folderPaths: [URL] = [] {
+        didSet {
+            if folderPaths.count > 0 {
+                NotificationCenter.default.post(name: folderPathsWereSetNotification, object: self, userInfo: ["folderPathCount": folderPaths.count])
+            }
+        }
+    }
     var destinationFolder: URL?
     
     var filesToBeMoved: [URL] = []
@@ -32,7 +40,14 @@ class ItemController {
                 completion(false)
             }
         }
+        prepareForNewArrancar()
         completion(true)
+    }
+    
+    func prepareForNewArrancar() {
+        self.filesToBeMoved = []
+        self.folderPaths = []
+        self.foldersToBeChecked = []
     }
     
     func getURLsForAllFilesIn(directory: URL, ofTypes types: [String]) {

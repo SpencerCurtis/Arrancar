@@ -35,8 +35,25 @@ class MainPopoverViewController: NSViewController {
         self.title = "Arrancar"
         arrancarButton.isEnabled = false
         checkboxButtons = [movFileTypeButton, mp4FileTypeButton, mkvFileTypeButton, jpgFileTypeButton, pngFileTypeButton]
+        setupFileDragDestinationView()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateFolderSelectedCountLabelWith(notification:)), name: ItemController.shared.folderPathsWereSetNotification, object: nil)
     }
     
+    func setupFileDragDestinationView() {
+        let fileDragDestinationView = FileDragDestinationView(frame: self.view.frame)
+        fileDragDestinationView.setup()
+        self.view.addSubview(fileDragDestinationView)
+    }
+    
+    func updateFolderSelectedCountLabelWith(notification: Notification) {
+        guard let folderCount = notification.userInfo?["folderPathCount"] as? Int else { return }
+        
+        var labelText = "\(folderCount) "
+        labelText += folderCount > 1 ? "Folders selected" : "Folder Selected"
+        
+        folderSelectedCountLabel.stringValue = labelText
+    }
     
     func toggleAllVideoCheckboxButtons() {
         
@@ -82,7 +99,10 @@ class MainPopoverViewController: NSViewController {
             
             let folderCount = openPanel.urls.filter({$0.hasDirectoryPath}).count
             
-            self.folderSelectedCountLabel.stringValue = "\(folderCount) Folders Selected"
+            var labelText = "\(folderCount) "
+            labelText += folderCount > 1 ? "Folders selected" : "Folder Selected"
+
+            self.folderSelectedCountLabel.stringValue = labelText
             if ItemController.shared.destinationFolder != nil && ItemController.shared.folderPaths.count > 0 {
                 self.arrancarButton.isEnabled = true
             }
@@ -133,7 +153,6 @@ class MainPopoverViewController: NSViewController {
                 self.destinationFolderLabel.stringValue = "Files could not be moved to \(destinationFolder.lastPathComponent)"
             }
             self.progressIndicator.stopAnimation(self)
-            ItemController.shared.filesToBeMoved = []
         }
     }
 }

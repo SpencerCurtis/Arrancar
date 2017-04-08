@@ -12,6 +12,7 @@
 		4617DF131E97F59E00F1582C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4617DF111E97F59E00F1582C /* Main.storyboard */; };
 		4617DF1C1E980FB400F1582C /* MainPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4617DF1A1E980FB400F1582C /* MainPopoverViewController.swift */; };
 		4617DF221E993D0A00F1582C /* ItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4617DF211E993D0A00F1582C /* ItemController.swift */; };
+		4617DF251E99512B00F1582C /* FileDragDestinationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4617DF241E99512B00F1582C /* FileDragDestinationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		4617DF141E97F59E00F1582C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4617DF1A1E980FB400F1582C /* MainPopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainPopoverViewController.swift; sourceTree = "<group>"; };
 		4617DF211E993D0A00F1582C /* ItemController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemController.swift; sourceTree = "<group>"; };
+		4617DF241E99512B00F1582C /* FileDragDestinationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileDragDestinationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 		4617DF0A1E97F59E00F1582C /* Arrancar */ = {
 			isa = PBXGroup;
 			children = (
+				4617DF261E99513A00F1582C /* Views */,
 				4617DF231E993D1300F1582C /* Controllers */,
 				4617DF1E1E98113C00F1582C /* View Controllers */,
 				4617DF201E98114D00F1582C /* Storyboards */,
@@ -94,6 +97,14 @@
 				4617DF211E993D0A00F1582C /* ItemController.swift */,
 			);
 			name = Controllers;
+			sourceTree = "<group>";
+		};
+		4617DF261E99513A00F1582C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4617DF241E99512B00F1582C /* FileDragDestinationView.swift */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -171,6 +182,7 @@
 				4617DF0C1E97F59E00F1582C /* AppDelegate.swift in Sources */,
 				4617DF221E993D0A00F1582C /* ItemController.swift in Sources */,
 				4617DF1C1E980FB400F1582C /* MainPopoverViewController.swift in Sources */,
+				4617DF251E99512B00F1582C /* FileDragDestinationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

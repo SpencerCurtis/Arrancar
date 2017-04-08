@@ -865,8 +865,12 @@
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <customView id="EXi-KQ-NPU">
+                    <rect key="frame" x="0.0" y="0.0" width="163" height="96"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </customView>
             </objects>
-            <point key="canvasLocation" x="86" y="739"/>
+            <point key="canvasLocation" x="532" y="259"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="q0G-Kq-muI">
