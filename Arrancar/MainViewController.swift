@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class MainPopoverViewController: NSViewController, ArrancarPreparationDelegate {
+class MainViewController: NSViewController, ArrancarPreparationDelegate {
     
     @IBOutlet weak var allVideoTypesCheckboxButton: NSButton!
     @IBOutlet weak var movFileTypeButton: NSButton!
@@ -26,7 +26,9 @@ class MainPopoverViewController: NSViewController, ArrancarPreparationDelegate {
     @IBOutlet weak var moveToDestinationButton: NSButton!
     @IBOutlet weak var progressIndicator: NSProgressIndicator!
     
-    var checkboxButtons: [NSButton] = []
+    var singleFiletypeCheckboxButtons: [NSButton] = []
+    var singleVideoTypeCheckboxButtons: [NSButton] = []
+    var singleImageTypeCheckboxButtons: [NSButton] = []
     
     var allVideoTypesAreChecked = false
     var allImageTypesAreChecked = false
@@ -40,7 +42,16 @@ class MainPopoverViewController: NSViewController, ArrancarPreparationDelegate {
         
         toggleDestinationOperationButtonsEnabledState()
         
-        checkboxButtons = [movFileTypeButton, mp4FileTypeButton, mkvFileTypeButton, jpgFileTypeButton, pngFileTypeButton]
+        singleFiletypeCheckboxButtons = [movFileTypeButton, mp4FileTypeButton, mkvFileTypeButton, jpgFileTypeButton, pngFileTypeButton]
+        singleVideoTypeCheckboxButtons = [movFileTypeButton, mp4FileTypeButton, mkvFileTypeButton]
+        singleImageTypeCheckboxButtons = [jpgFileTypeButton, pngFileTypeButton]
+        
+        
+        
+        singleVideoTypeCheckboxButtons.forEach({$0.action = #selector(checkIfAllVideoCheckboxButtonsAreChecked(sender:))})
+        singleImageTypeCheckboxButtons.forEach({$0.action = #selector(checkIfAllImageCheckboxButtonsAreChecked(sender:))})
+
+        
         setupFileDragDestinationView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateFolderSelectedCountLabelWith(notification:)), name: ItemController.shared.folderPathsWereSetNotification, object: nil)
@@ -83,6 +94,40 @@ class MainPopoverViewController: NSViewController, ArrancarPreparationDelegate {
         
         allImageTypesAreChecked = state == 1 ? true : false
         print(allImageTypesCheckboxButton)
+    }
+    
+    func checkIfAllVideoCheckboxButtonsAreChecked(sender: NSButton) {
+        
+        
+        if singleVideoTypeCheckboxButtons.filter({$0.state == 0}).count != singleVideoTypeCheckboxButtons.count {
+            allVideoTypesCheckboxButton.state = 0
+        }
+        
+        
+        if singleVideoTypeCheckboxButtons.filter({$0.state == 1}).count == singleVideoTypeCheckboxButtons.count {
+            allVideoTypesCheckboxButton.state = 1
+        }
+
+//        if sender.state == movFileTypeButton.state && sender.state == mp4FileTypeButton.state && sender.state == mkvFileTypeButton.state {
+//            
+//            allVideoTypesCheckboxButton.state = sender.state
+//        } else {
+//            allVideoTypesCheckboxButton.state = sender.state == 0 ? 1 : 0
+//        }
+        
+    }
+    func checkIfAllImageCheckboxButtonsAreChecked(sender: NSButton) {
+        
+        
+        if singleImageTypeCheckboxButtons.filter({$0.state == 0}).count != singleImageTypeCheckboxButtons.count {
+            allImageTypesCheckboxButton.state = 0
+        }
+        
+        
+        if singleImageTypeCheckboxButtons.filter({$0.state == 1}).count == singleImageTypeCheckboxButtons.count {
+            allImageTypesCheckboxButton.state = 1
+        }
+    
     }
     
     func toggleDestinationOperationButtonsEnabledState() {
@@ -145,7 +190,7 @@ class MainPopoverViewController: NSViewController, ArrancarPreparationDelegate {
     
     func prepareForSelectedFileModification() {
         self.progressIndicator.startAnimation(self)
-        let selectedButtons = checkboxButtons.filter({$0.state == 1})
+        let selectedButtons = singleFiletypeCheckboxButtons.filter({$0.state == 1})
         
         var selectedTypes = selectedButtons.map({$0.title})
         selectedTypes += selectedTypes.map({$0.lowercased()})

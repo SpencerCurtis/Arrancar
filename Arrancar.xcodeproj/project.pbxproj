@@ -10,7 +10,7 @@
 		4617DF0C1E97F59E00F1582C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4617DF0B1E97F59E00F1582C /* AppDelegate.swift */; };
 		4617DF101E97F59E00F1582C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4617DF0F1E97F59E00F1582C /* Assets.xcassets */; };
 		4617DF131E97F59E00F1582C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4617DF111E97F59E00F1582C /* Main.storyboard */; };
-		4617DF1C1E980FB400F1582C /* MainPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4617DF1A1E980FB400F1582C /* MainPopoverViewController.swift */; };
+		4617DF1C1E980FB400F1582C /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4617DF1A1E980FB400F1582C /* MainViewController.swift */; };
 		4617DF221E993D0A00F1582C /* ItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4617DF211E993D0A00F1582C /* ItemController.swift */; };
 		4617DF251E99512B00F1582C /* FileDragDestinationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4617DF241E99512B00F1582C /* FileDragDestinationView.swift */; };
 /* End PBXBuildFile section */
@@ -21,7 +21,7 @@
 		4617DF0F1E97F59E00F1582C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4617DF121E97F59E00F1582C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4617DF141E97F59E00F1582C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4617DF1A1E980FB400F1582C /* MainPopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainPopoverViewController.swift; sourceTree = "<group>"; };
+		4617DF1A1E980FB400F1582C /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		4617DF211E993D0A00F1582C /* ItemController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemController.swift; sourceTree = "<group>"; };
 		4617DF241E99512B00F1582C /* FileDragDestinationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileDragDestinationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -68,7 +68,7 @@
 		4617DF1E1E98113C00F1582C /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				4617DF1A1E980FB400F1582C /* MainPopoverViewController.swift */,
+				4617DF1A1E980FB400F1582C /* MainViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -181,7 +181,7 @@
 			files = (
 				4617DF0C1E97F59E00F1582C /* AppDelegate.swift in Sources */,
 				4617DF221E993D0A00F1582C /* ItemController.swift in Sources */,
-				4617DF1C1E980FB400F1582C /* MainPopoverViewController.swift in Sources */,
+				4617DF1C1E980FB400F1582C /* MainViewController.swift in Sources */,
 				4617DF251E99512B00F1582C /* FileDragDestinationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
