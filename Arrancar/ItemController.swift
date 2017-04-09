@@ -63,6 +63,7 @@ class ItemController {
         self.filesToBeModified = []
         self.folderPaths = []
         self.foldersToBeChecked = []
+        self.destinationFolder = nil
         delegate?.prepareViewsForNewArrancar()
     }
     

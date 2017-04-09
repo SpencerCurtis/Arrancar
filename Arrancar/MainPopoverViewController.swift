@@ -37,8 +37,8 @@ class MainPopoverViewController: NSViewController, ArrancarPreparationDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Arrancar"
-        moveToDestinationButton.isEnabled = false
-        copyToDestinationButton.isEnabled = false
+        
+        toggleDestinationOperationButtonsEnabledState()
         
         checkboxButtons = [movFileTypeButton, mp4FileTypeButton, mkvFileTypeButton, jpgFileTypeButton, pngFileTypeButton]
         setupFileDragDestinationView()
@@ -89,6 +89,9 @@ class MainPopoverViewController: NSViewController, ArrancarPreparationDelegate {
         if ItemController.shared.destinationFolder != nil && ItemController.shared.folderPaths.count > 0 {
             self.moveToDestinationButton.isEnabled = true
             self.copyToDestinationButton.isEnabled = true
+        } else if ItemController.shared.destinationFolder == nil && ItemController.shared.folderPaths.count == 0 {
+            self.moveToDestinationButton.isEnabled = false
+            self.copyToDestinationButton.isEnabled = false
         }
     }
     
@@ -157,6 +160,7 @@ class MainPopoverViewController: NSViewController, ArrancarPreparationDelegate {
     }
     
     func prepareViewsForNewArrancar() {
+        toggleDestinationOperationButtonsEnabledState()
         self.folderSelectedCountLabel.stringValue = defaultFolderSelectedCountLabelText
     }
     
@@ -176,9 +180,8 @@ class MainPopoverViewController: NSViewController, ArrancarPreparationDelegate {
                 self.destinationFolderLabel.stringValue = "Files could not be moved to \(destinationFolder.lastPathComponent)"
             }
             self.progressIndicator.stopAnimation(self)
-
+            NSWorkspace.shared().activateFileViewerSelecting([destinationFolder])
         }
-        
     }
     
     @IBAction func copyToDestinationButtonClicked(_ sender: Any) {
@@ -195,9 +198,7 @@ class MainPopoverViewController: NSViewController, ArrancarPreparationDelegate {
                 self.destinationFolderLabel.stringValue = "Files could not be copied to \(destinationFolder.lastPathComponent)"
             }
             self.progressIndicator.stopAnimation(self)
-            
+            NSWorkspace.shared().activateFileViewerSelecting([destinationFolder])
         }
     }
-    
-    
 }
