@@ -804,7 +804,7 @@
                                         </connections>
                                     </button>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cbh-AM-N69">
-                                        <rect key="frame" x="91" y="4" width="20" height="17"/>
+                                        <rect key="frame" x="91" y="4" width="19.5" height="17"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="or" id="OY9-6T-Lvd">
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -812,7 +812,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6W1-K5-mdL">
-                                        <rect key="frame" x="105" y="-7" width="104" height="32"/>
+                                        <rect key="frame" x="104.5" y="-7" width="104.5" height="32"/>
                                         <buttonCell key="cell" type="push" title="Move to" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="my9-FH-NGS">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -904,6 +904,10 @@
                     <rect key="frame" x="0.0" y="0.0" width="163" height="96"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </customView>
+                <visualEffectView appearanceType="vibrantDark" blendingMode="behindWindow" material="dark" state="active" id="iJc-X7-r9U" customClass="FolderDragView" customModule="Arrancar" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="312" height="128"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </visualEffectView>
             </objects>
             <point key="canvasLocation" x="531.5" y="259"/>
         </scene>

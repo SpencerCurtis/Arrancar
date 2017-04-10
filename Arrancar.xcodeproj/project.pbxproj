@@ -12,7 +12,7 @@
 		4617DF131E97F59E00F1582C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4617DF111E97F59E00F1582C /* Main.storyboard */; };
 		4617DF1C1E980FB400F1582C /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4617DF1A1E980FB400F1582C /* MainViewController.swift */; };
 		4617DF221E993D0A00F1582C /* ItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4617DF211E993D0A00F1582C /* ItemController.swift */; };
-		4617DF251E99512B00F1582C /* FileDragDestinationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4617DF241E99512B00F1582C /* FileDragDestinationView.swift */; };
+		4617DF251E99512B00F1582C /* FolderDragView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4617DF241E99512B00F1582C /* FolderDragView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,7 +23,7 @@
 		4617DF141E97F59E00F1582C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4617DF1A1E980FB400F1582C /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		4617DF211E993D0A00F1582C /* ItemController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemController.swift; sourceTree = "<group>"; };
-		4617DF241E99512B00F1582C /* FileDragDestinationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileDragDestinationView.swift; sourceTree = "<group>"; };
+		4617DF241E99512B00F1582C /* FolderDragView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderDragView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,7 +102,7 @@
 		4617DF261E99513A00F1582C /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				4617DF241E99512B00F1582C /* FileDragDestinationView.swift */,
+				4617DF241E99512B00F1582C /* FolderDragView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -182,7 +182,7 @@
 				4617DF0C1E97F59E00F1582C /* AppDelegate.swift in Sources */,
 				4617DF221E993D0A00F1582C /* ItemController.swift in Sources */,
 				4617DF1C1E980FB400F1582C /* MainViewController.swift in Sources */,
-				4617DF251E99512B00F1582C /* FileDragDestinationView.swift in Sources */,
+				4617DF251E99512B00F1582C /* FolderDragView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

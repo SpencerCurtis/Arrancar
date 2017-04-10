@@ -20,7 +20,9 @@ class ItemController {
     }
     
     let folderPathsWereSetNotification = Notification.Name("folderPathsWereSet")
+    let destinationFolderWasSetNotification = Notification.Name("destinationFolderWasSet")
     
+    let folderPathCountKey = "folderPathCount"
     var folderPaths: [URL] = [] {
         didSet {
             if folderPaths.count > 0 {
@@ -28,7 +30,15 @@ class ItemController {
             }
         }
     }
-    var destinationFolder: URL?
+    
+    let destinationFolderKey = "destinationFolder"
+    var destinationFolder: URL? {
+        didSet {
+            if let destinationFolder = destinationFolder {
+                NotificationCenter.default.post(name: destinationFolderWasSetNotification, object: self, userInfo: ["destinationFolder": destinationFolder])
+            }
+        }
+    }
     
     var filesToBeModified: [URL] = []
     var foldersToBeChecked: [URL] = []

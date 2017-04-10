@@ -46,27 +46,65 @@ class MainViewController: NSViewController, ArrancarPreparationDelegate {
         singleVideoTypeCheckboxButtons = [movFileTypeButton, mp4FileTypeButton, mkvFileTypeButton]
         singleImageTypeCheckboxButtons = [jpgFileTypeButton, pngFileTypeButton]
         
-        
-        
         singleVideoTypeCheckboxButtons.forEach({$0.action = #selector(checkIfAllVideoCheckboxButtonsAreChecked(sender:))})
         singleImageTypeCheckboxButtons.forEach({$0.action = #selector(checkIfAllImageCheckboxButtonsAreChecked(sender:))})
 
         
         setupFileDragDestinationView()
+        setupDragTargetFoldersView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateFolderSelectedCountLabelWith(notification:)), name: ItemController.shared.folderPathsWereSetNotification, object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateDestinationFolderLabelWith(notification:)), name: ItemController.shared.destinationFolderWasSetNotification, object: nil)
         ItemController.shared.delegate = self
     }
     
+    func setupDragTargetFoldersView() {
+        let height = self.view.frame.size.height / 2
+        let width = self.view.frame.size.width
+        let frame = CGRect(x: 0, y: height, width: width, height: height)
+
+        let dragTargetFoldersView = FolderDragView(frame: frame)
+        dragTargetFoldersView.setupWith(folderType: .target)
+        dragTargetFoldersView.wantsLayer = true
+        dragTargetFoldersView.layerUsesCoreImageFilters = true
+        
+        guard let blurFilter = CIFilter(name: "CIGaussianBlur") else { return }
+        blurFilter.setDefaults()
+        blurFilter.setValue(3.5, forKey: kCIInputRadiusKey)
+        dragTargetFoldersView.blurFilter = blurFilter
+        
+        self.view.addSubview(dragTargetFoldersView)
+    }
+    
     func setupFileDragDestinationView() {
-        let fileDragDestinationView = FileDragDestinationView(frame: self.view.frame)
-        fileDragDestinationView.setup()
+        let height = self.view.frame.size.height / 2
+        let width = self.view.frame.size.width
+        let frame = CGRect(x: 0, y: 0, width: width, height: height)
+        
+        let fileDragDestinationView = FolderDragView(frame: frame)
+        fileDragDestinationView.setupWith(folderType: .destination)
+        fileDragDestinationView.wantsLayer = true
+        fileDragDestinationView.layerUsesCoreImageFilters = true
+        
+        guard let blurFilter = CIFilter(name: "CIGaussianBlur") else { return }
+        blurFilter.setDefaults()
+        blurFilter.setValue(3.5, forKey: kCIInputRadiusKey)
+        fileDragDestinationView.blurFilter = blurFilter
+
         self.view.addSubview(fileDragDestinationView)
     }
     
+    func updateDestinationFolderLabelWith(notification: Notification) {
+        let destinationFolderKey = ItemController.shared.destinationFolderKey
+        guard let destinationFolderURL = notification.userInfo?[destinationFolderKey] as? URL else { return }
+        
+        destinationFolderLabel.stringValue = "Your destination folder is: \(destinationFolderURL.lastPathComponent)"
+        toggleDestinationOperationButtonsEnabledState()
+    }
+    
     func updateFolderSelectedCountLabelWith(notification: Notification) {
-        guard let folderCount = notification.userInfo?["folderPathCount"] as? Int else { return }
+        let folderPathCountKey = ItemController.shared.folderPathCountKey
+        guard let folderCount = notification.userInfo?[folderPathCountKey] as? Int else { return }
         
         var labelText = "\(folderCount) "
         labelText += folderCount > 1 ? "Folders selected" : "Folder Selected"
