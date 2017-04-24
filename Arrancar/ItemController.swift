@@ -77,7 +77,7 @@ class ItemController {
         delegate?.prepareViewsForNewArrancar()
     }
     
-    func getURLsForAllFilesIn(directory: URL, ofTypes types: [String]) {
+    func getURLsForAllFilesIn(directory: URL, ofTypes types: [String], ignoringFilesWithWords words: [String]) {
         
         guard directory.hasDirectoryPath else { return }
         
@@ -85,10 +85,19 @@ class ItemController {
         guard let contents = try? ItemController.shared.fileManager.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: .skipsHiddenFiles) else { return }
         
         for item in contents {
+            
+            var hasWordToIgnore = false
+            
+            for wordToIgnore in words {
+                if item.absoluteString.contains(wordToIgnore) { hasWordToIgnore = true }
+            }
+            
+            guard !hasWordToIgnore else { break }
+            
             if item.hasDirectoryPath {
                 
                 self.foldersToBeChecked.append(item)
-                getURLsForAllFilesIn(directory: item, ofTypes: types)
+                getURLsForAllFilesIn(directory: directory, ofTypes: types, ignoringFilesWithWords: words)
                 
             } else if types.contains(item.pathExtension) {
                 self.filesToBeModified.append(item)

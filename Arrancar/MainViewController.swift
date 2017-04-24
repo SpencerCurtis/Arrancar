@@ -22,6 +22,7 @@ class MainViewController: NSViewController, ArrancarPreparationDelegate {
     @IBOutlet weak var folderSelectedCountLabel: NSTextField!
     @IBOutlet weak var destinationFolderLabel: NSTextField!
     @IBOutlet weak var otherFileExtensionsTextField: NSTextField!
+    @IBOutlet weak var ignoreStringTextField: NSTextField!
     @IBOutlet weak var copyToDestinationButton: NSButton!
     @IBOutlet weak var moveToDestinationButton: NSButton!
     @IBOutlet weak var progressIndicator: NSProgressIndicator!
@@ -121,7 +122,6 @@ class MainViewController: NSViewController, ArrancarPreparationDelegate {
         mp4FileTypeButton.state = state
         mkvFileTypeButton.state = state
         allVideoTypesAreChecked = state == 1 ? true : false
-        print(allVideoTypesAreChecked)
     }
     func toggleAllImageCheckboxButtons() {
         
@@ -131,7 +131,6 @@ class MainViewController: NSViewController, ArrancarPreparationDelegate {
         pngFileTypeButton.state = state
         
         allImageTypesAreChecked = state == 1 ? true : false
-        print(allImageTypesCheckboxButton)
     }
     
     func checkIfAllVideoCheckboxButtonsAreChecked(sender: NSButton) {
@@ -146,14 +145,8 @@ class MainViewController: NSViewController, ArrancarPreparationDelegate {
             allVideoTypesCheckboxButton.state = 1
         }
 
-//        if sender.state == movFileTypeButton.state && sender.state == mp4FileTypeButton.state && sender.state == mkvFileTypeButton.state {
-//            
-//            allVideoTypesCheckboxButton.state = sender.state
-//        } else {
-//            allVideoTypesCheckboxButton.state = sender.state == 0 ? 1 : 0
-//        }
-        
     }
+    
     func checkIfAllImageCheckboxButtonsAreChecked(sender: NSButton) {
         
         
@@ -237,8 +230,10 @@ class MainViewController: NSViewController, ArrancarPreparationDelegate {
             selectedTypes += otherFileTypes
         }
         
+        let wordsToIgnore = ignoreStringTextField.stringValue.components(separatedBy: " ")
         for selectedFolder in ItemController.shared.folderPaths {
-            ItemController.shared.getURLsForAllFilesIn(directory: selectedFolder, ofTypes: selectedTypes)
+            
+            ItemController.shared.getURLsForAllFilesIn(directory: selectedFolder, ofTypes: selectedTypes, ignoringFilesWithWords: wordsToIgnore)
         }
     }
     

@@ -109,11 +109,9 @@ class FolderDragView: NSView {
         self.addSubview(folderTypeLabel)
         self.addConstraints([centerYConstraint, leadingConstraint, trailingConstraint])
         
-        guard let labelFont =  folderTypeLabel.font else { return }
+        guard let labelFont = folderTypeLabel.font else { return }
         
-        let fontSize: CGFloat = folderType == .destination ? 30.0 : 30.0
-        
-        let newFont = NSFont(name: labelFont.fontName, size: fontSize)
+        let newFont = NSFont(name: labelFont.fontName, size: 30)
         folderTypeLabel.font = newFont
         
     }
