@@ -81,8 +81,13 @@ class ItemController {
         
         guard directory.hasDirectoryPath else { return }
         
+        let directoryEnumerator = ItemController.shared.fileManager.enumerator(at: directory, includingPropertiesForKeys: [URLResourceKey.isRegularFileKey], options: .skipsHiddenFiles) { (url, error) -> Bool in
+            print(error.localizedDescription)
+            
+            return false
+        }
         
-        guard let contents = try? ItemController.shared.fileManager.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: .skipsHiddenFiles) else { return }
+        guard let contents = directoryEnumerator?.allObjects as? [URL] else { return }
         
         for item in contents {
             
@@ -94,19 +99,9 @@ class ItemController {
             
             guard !hasWordToIgnore else { break }
             
-            if item.hasDirectoryPath {
-                
-                self.foldersToBeChecked.append(item)
-                getURLsForAllFilesIn(directory: directory, ofTypes: types, ignoringFilesWithWords: words)
-                
-            } else if types.contains(item.pathExtension) {
+            if types.contains(item.pathExtension) {
                 self.filesToBeModified.append(item)
             }
-        }
-        
-        if ItemController.shared.foldersToBeChecked.contains(directory) {
-            guard let index = ItemController.shared.foldersToBeChecked.index(of: directory) else { return }
-            self.foldersToBeChecked.remove(at: index)
         }
     }
 }

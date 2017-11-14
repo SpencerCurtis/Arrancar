@@ -231,8 +231,8 @@ class MainViewController: NSViewController, ArrancarPreparationDelegate {
         }
         
         let wordsToIgnore = ignoreStringTextField.stringValue.components(separatedBy: " ")
+        
         for selectedFolder in ItemController.shared.folderPaths {
-            
             ItemController.shared.getURLsForAllFilesIn(directory: selectedFolder, ofTypes: selectedTypes, ignoringFilesWithWords: wordsToIgnore)
         }
     }
