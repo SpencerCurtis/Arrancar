@@ -51,7 +51,11 @@ class ItemController {
             do {
                 if modificationType == .copy {
                     let pathComponents = fileURL.lastPathComponent.components(separatedBy: ".")
-                    guard let fileName = pathComponents.first, let pathExtension = pathComponents.last else { return }
+                    guard let pathExtension = pathComponents.last else { return }
+                    
+                    var fileName = fileURL.lastPathComponent
+                    fileName.removeLast(pathExtension.count + 1)
+                    
                     let lastFileComponent = "\(fileName) copy"
                     let newPath = newDirectory.appendingPathComponent(lastFileComponent).appendingPathExtension(pathExtension)
                     try fileManager.copyItem(at: fileURL, to: newPath)
