@@ -95,7 +95,7 @@ class MainViewController: NSViewController, ArrancarPreparationDelegate {
         self.view.addSubview(fileDragDestinationView)
     }
     
-    func updateDestinationFolderLabelWith(notification: Notification) {
+    @objc func updateDestinationFolderLabelWith(notification: Notification) {
         let destinationFolderKey = ItemController.shared.destinationFolderKey
         guard let destinationFolderURL = notification.userInfo?[destinationFolderKey] as? URL else { return }
         
@@ -103,7 +103,7 @@ class MainViewController: NSViewController, ArrancarPreparationDelegate {
         toggleDestinationOperationButtonsEnabledState()
     }
     
-    func updateFolderSelectedCountLabelWith(notification: Notification) {
+    @objc func updateFolderSelectedCountLabelWith(notification: Notification) {
         let folderPathCountKey = ItemController.shared.folderPathCountKey
         guard let folderCount = notification.userInfo?[folderPathCountKey] as? Int else { return }
         
@@ -121,7 +121,7 @@ class MainViewController: NSViewController, ArrancarPreparationDelegate {
         movFileTypeButton.state = state
         mp4FileTypeButton.state = state
         mkvFileTypeButton.state = state
-        allVideoTypesAreChecked = state == 1 ? true : false
+        allVideoTypesAreChecked = state.rawValue == 1 ? true : false
     }
     func toggleAllImageCheckboxButtons() {
         
@@ -130,33 +130,33 @@ class MainViewController: NSViewController, ArrancarPreparationDelegate {
         jpgFileTypeButton.state = state
         pngFileTypeButton.state = state
         
-        allImageTypesAreChecked = state == 1 ? true : false
+        allImageTypesAreChecked = state.rawValue == 1 ? true : false
     }
     
-    func checkIfAllVideoCheckboxButtonsAreChecked(sender: NSButton) {
+    @objc func checkIfAllVideoCheckboxButtonsAreChecked(sender: NSButton) {
         
         
-        if singleVideoTypeCheckboxButtons.filter({$0.state == 0}).count != singleVideoTypeCheckboxButtons.count {
-            allVideoTypesCheckboxButton.state = 0
+        if singleVideoTypeCheckboxButtons.filter({$0.state.rawValue == 0}).count != singleVideoTypeCheckboxButtons.count {
+            allVideoTypesCheckboxButton.state = convertToNSControlStateValue(0)
         }
         
         
-        if singleVideoTypeCheckboxButtons.filter({$0.state == 1}).count == singleVideoTypeCheckboxButtons.count {
-            allVideoTypesCheckboxButton.state = 1
+        if singleVideoTypeCheckboxButtons.filter({$0.state.rawValue == 1}).count == singleVideoTypeCheckboxButtons.count {
+            allVideoTypesCheckboxButton.state = convertToNSControlStateValue(1)
         }
 
     }
     
-    func checkIfAllImageCheckboxButtonsAreChecked(sender: NSButton) {
+    @objc func checkIfAllImageCheckboxButtonsAreChecked(sender: NSButton) {
         
         
-        if singleImageTypeCheckboxButtons.filter({$0.state == 0}).count != singleImageTypeCheckboxButtons.count {
-            allImageTypesCheckboxButton.state = 0
+        if singleImageTypeCheckboxButtons.filter({$0.state.rawValue == 0}).count != singleImageTypeCheckboxButtons.count {
+            allImageTypesCheckboxButton.state = convertToNSControlStateValue(0)
         }
         
         
-        if singleImageTypeCheckboxButtons.filter({$0.state == 1}).count == singleImageTypeCheckboxButtons.count {
-            allImageTypesCheckboxButton.state = 1
+        if singleImageTypeCheckboxButtons.filter({$0.state.rawValue == 1}).count == singleImageTypeCheckboxButtons.count {
+            allImageTypesCheckboxButton.state = convertToNSControlStateValue(1)
         }
     
     }
@@ -189,7 +189,7 @@ class MainViewController: NSViewController, ArrancarPreparationDelegate {
         
         openPanel.begin { (result) in
             
-            guard result == NSFileHandlingPanelOKButton else { return }
+            guard result.rawValue == NSFileHandlingPanelOKButton else { return }
             ItemController.shared.folderPaths = openPanel.urls
             
             let folderCount = openPanel.urls.filter({$0.hasDirectoryPath}).count
@@ -212,16 +212,16 @@ class MainViewController: NSViewController, ArrancarPreparationDelegate {
         
         openPanel.begin { (result) in
             
-            guard let destination = openPanel.url, result == NSFileHandlingPanelOKButton else { return }
+            guard let destination = openPanel.url, result.rawValue == NSFileHandlingPanelOKButton else { return }
             ItemController.shared.destinationFolder = destination
             self.destinationFolderLabel.stringValue = "Your destination folder is: \(destination.lastPathComponent)"
-            self.toggleDestinationOperationButtonsEnabledState()
+//            self.toggleDestinationOperationButtonsEnabledState()
         }
     }
     
     func prepareForSelectedFileModification() {
         self.progressIndicator.startAnimation(self)
-        let selectedButtons = singleFiletypeCheckboxButtons.filter({$0.state == 1})
+        let selectedButtons = singleFiletypeCheckboxButtons.filter({$0.state.rawValue == 1})
         
         var selectedTypes = selectedButtons.map({$0.title})
         selectedTypes += selectedTypes.map({$0.lowercased()})
@@ -258,7 +258,7 @@ class MainViewController: NSViewController, ArrancarPreparationDelegate {
                 self.destinationFolderLabel.stringValue = "Files could not be moved to \(destinationFolder.lastPathComponent)"
             }
             self.progressIndicator.stopAnimation(self)
-            NSWorkspace.shared().activateFileViewerSelecting([destinationFolder])
+            NSWorkspace.shared.activateFileViewerSelecting([destinationFolder])
         }
     }
     
@@ -276,7 +276,12 @@ class MainViewController: NSViewController, ArrancarPreparationDelegate {
                 self.destinationFolderLabel.stringValue = "Files could not be copied to \(destinationFolder.lastPathComponent)"
             }
             self.progressIndicator.stopAnimation(self)
-            NSWorkspace.shared().activateFileViewerSelecting([destinationFolder])
+            NSWorkspace.shared.activateFileViewerSelecting([destinationFolder])
         }
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToNSControlStateValue(_ input: Int) -> NSControl.StateValue {
+	return NSControl.StateValue(rawValue: input)
 }

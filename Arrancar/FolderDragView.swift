@@ -10,8 +10,8 @@ import Cocoa
 
 class FolderDragView: NSView {
 
-    var acceptableTypes: Set<String> { return [NSURLPboardType] }
-    let filteringOptions = [NSPasteboardURLReadingFileURLsOnlyKey: 1]
+    var acceptableTypes: Set<String> { return [NSPasteboard.PasteboardType(kUTTypeURL as String).rawValue] }
+    let filteringOptions = [convertFromNSPasteboardReadingOptionKey(NSPasteboard.ReadingOptionKey.urlReadingFileURLsOnly): 1]
     
     enum DraggedFolderType: String {
         case target = "Add to folder(s) containing files to be modified"
@@ -61,9 +61,9 @@ class FolderDragView: NSView {
     
         isReceivingDrag = false
         hideFolderTypeLabel()
-        let pasteBoard = draggingInfo.draggingPasteboard()
+        let pasteBoard = draggingInfo.draggingPasteboard
     
-        if let urls = pasteBoard.readObjects(forClasses: [NSURL.self], options:filteringOptions) as? [URL], urls.count > 0 {
+        if let urls = pasteBoard.readObjects(forClasses: [NSURL.self], options:convertToOptionalNSPasteboardReadingOptionKeyDictionary(filteringOptions)) as? [URL], urls.count > 0 {
             
             if folderType == .target {
             
@@ -98,7 +98,7 @@ class FolderDragView: NSView {
     }
     
     func setupWith(folderType: DraggedFolderType) {
-        register(forDraggedTypes: Array(acceptableTypes))
+        registerForDraggedTypes(convertToNSPasteboardPasteboardTypeArray(Array(acceptableTypes)))
         self.folderType = folderType
         let centerYConstraint = NSLayoutConstraint(item: folderTypeLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 4)
         let leadingConstraint = NSLayoutConstraint(item: folderTypeLabel, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 4)
@@ -129,9 +129,9 @@ class FolderDragView: NSView {
         
         var canAccept = false
         
-        let pasteBoard = draggingInfo.draggingPasteboard()
+        let pasteBoard = draggingInfo.draggingPasteboard
         
-        if let urls = pasteBoard.readObjects(forClasses: [NSURL.self], options:filteringOptions) as? [URL],urls.filter({$0.hasDirectoryPath}).count > 0 {
+        if let urls = pasteBoard.readObjects(forClasses: [NSURL.self], options:convertToOptionalNSPasteboardReadingOptionKeyDictionary(filteringOptions)) as? [URL],urls.filter({$0.hasDirectoryPath}).count > 0 {
             if folderType == .target {
                 canAccept = true
             } else if folderType == .destination && urls.count == 1 {
@@ -161,4 +161,20 @@ extension NSView {
             self.layer?.backgroundColor = newValue?.cgColor
         }
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSPasteboardReadingOptionKey(_ input: NSPasteboard.ReadingOptionKey) -> String {
+	return input.rawValue
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSPasteboardReadingOptionKeyDictionary(_ input: [String: Any]?) -> [NSPasteboard.ReadingOptionKey: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSPasteboard.ReadingOptionKey(rawValue: key), value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToNSPasteboardPasteboardTypeArray(_ input: [String]) -> [NSPasteboard.PasteboardType] {
+	return input.map { key in NSPasteboard.PasteboardType(key) }
 }
